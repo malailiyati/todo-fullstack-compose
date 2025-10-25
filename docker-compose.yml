@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16
+    container_name: todo-db
+    restart: always
+    environment:
+      POSTGRES_USER: lala
+      POSTGRES_PASSWORD: 2105
+      POSTGRES_DB: todo
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./todo
+    container_name: todo-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      APP_PORT: 8080
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: lala
+      DB_PASS: 2105
+      DB_NAME: todo
+      DB_SSLMODE: disable
+    ports:
+      - "8080:8080"
+    command: ["./server"]
+
+  frontend:
+    build: ./todo-frontend
+    container_name: todo-frontend
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      - VITE_PROXY_TARGET=http://backend:8080
+    ports:
+      - "5173:5173"
+    command: ["npm", "run", "dev", "--", "--host"]
+
+volumes:
+  db_data:

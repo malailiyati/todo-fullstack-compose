@@ -1,4 +1,4 @@
-# 🐳 Industrix Todo App – Fullstack (Docker Compose)
+# 🐳 Todo App – Fullstack (Docker Compose)
 
 This repository contains the **Docker Compose setup** for running both the frontend and backend of the Industrix Todo Application.
 
